@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Carrito = ({cart}) => {
+export const Carrito = ({ cart, buy }) => {
   return (
     <>
       {cart.map((item) => (
@@ -9,6 +9,8 @@ export const Carrito = ({cart}) => {
           <p>{item.qty}</p>
         </div>
       ))}
+
+      <button onClick={buy}>Buy</button>
     </>
   );
 };

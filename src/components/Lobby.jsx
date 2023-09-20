@@ -26,12 +26,17 @@ export const Lobby = () => {
     setCounter(counter + 1);
   };
 
+  const buy = () => {
+    setCart([])
+    setCounter(0)
+  }
+
   const addToCart = (product) => {
-    const existingProduct = cart.find((item) => item === product.title);
+    const existingProduct = cart.find((item) => item.title === product.title);
 
     if (existingProduct) {
       const updatedCart = cart.map((item) =>
-        item === product.title ? { ...item, qty: item.qty + 1 } : item
+        item.title === product.title ? { ...item, qty: item.qty + 1 } : item
       );
       setCart(updatedCart);
     } else {
@@ -56,7 +61,8 @@ export const Lobby = () => {
       <h1>COUNTER : {counter}</h1>
       <div className="modal">
         {isModalOpen ? "" : <button onClick={openModal}>Carrito</button>}
-        <Modal isOpen={isModalOpen} onClose={closeModal} cart={cart}>
+        <Modal isOpen={isModalOpen} onClose={closeModal} cart={cart}
+        buy = {buy}>
           <button onClick={closeModal}>Cerrar carrito</button>
         </Modal>
       </div>
