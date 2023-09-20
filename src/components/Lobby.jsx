@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { getAllItems } from "../api/cartapi";
 import "../styles/lobby.css";
 import { Button } from "./Button";
-import { Carrito } from "./Carrito";
 import { Modal } from "./Modal";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+
 
 export const Lobby = () => {
   const [products, setProducts] = useState([]);
@@ -13,6 +14,8 @@ export const Lobby = () => {
   const [counter, setCounter] = useState(0);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const navigate = useNavigate()
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -29,6 +32,7 @@ export const Lobby = () => {
   const buy = () => {
     setCart([])
     setCounter(0)
+
   }
 
   const addToCart = (product) => {
@@ -36,11 +40,11 @@ export const Lobby = () => {
 
     if (existingProduct) {
       const updatedCart = cart.map((item) =>
-        item.title === product.title ? { ...item, qty: item.qty + 1 } : item
+        item.title === product.title ? { ...item,  qty: item.qty + 1, price: item.price } : item
       );
       setCart(updatedCart);
     } else {
-      setCart([...cart, { title: product.title, qty: 1 }]);
+      setCart([...cart, { title: product.title, qty: 1, price: product.price }]);
     }
   };
   useEffect(() => {
@@ -67,8 +71,12 @@ export const Lobby = () => {
         </Modal>
       </div>
       {products.map((product) => (
-        <div key={product.id} className="product">
-          <p>{product.title}</p>
+        <div key={product.id} className="product" 
+        onClick={() => {
+          navigate(`/product/${product.id}`);
+        }} >
+          <h3>{product.title}</h3>
+          <p>${product.price}</p>
           <img src={product.image} className="images" />
           <Button
             product={product}
